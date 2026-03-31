@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://ainavi.co.uk
+
+# Sitemaps
+Sitemap: https://ainavi.co.uk/sitemap.xml

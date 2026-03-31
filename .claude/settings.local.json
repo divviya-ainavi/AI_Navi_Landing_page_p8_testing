@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run typecheck:*)",
+      "WebSearch",
+      "Bash(powershell -Command \"$word = New-Object -ComObject Word.Application; $doc = $word.Documents.Open\\(\\(Get-Location\\).Path + ''\\\\analytics-setup-guide.docx''\\); $doc.Content.Text; $doc.Close\\(\\); $word.Quit\\(\\)\")",
+      "Bash(powershell -Command \"Expand-Archive -Path ''analytics-setup-guide.docx'' -DestinationPath ''docx_temp'' -Force\")",
+      "WebFetch(domain:ainavi.co.uk)"
+    ]
+  }
+}

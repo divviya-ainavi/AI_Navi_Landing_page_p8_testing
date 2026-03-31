@@ -1,0 +1,32 @@
+# AI Navi - Fractional AI Leadership
+
+> AI Navi provides fractional AI leadership for UK mid-market Consumer Products and Logistics companies.
+
+## About
+AI Navi is a fractional AI consultancy that embeds senior AI leadership into mid-market businesses. We help Consumer Products (FMCG, CPG) and Logistics companies escape "pilot purgatory" and ship production AI systems.
+
+## Services
+- AI FlightCheck: AI diagnostic and strategy document for board-level approval
+- AI FlightPath Sprint: 90-day implementation sprints to ship production AI
+- AI FlightScale Retainer: Ongoing fractional CAIO and CTO support
+- AI Data Engineering: Bespoke data infrastructure and pipeline architecture
+
+## Target Audience
+- UK mid-market companies (£50M-£500M revenue)
+- Consumer Products, FMCG, CPG companies
+- Logistics and supply chain businesses
+- C-suite executives and operations leaders
+
+## Key Differentiators
+- Senior practitioners only (no juniors)
+- Production-focused (not just strategy decks)
+- Industry-specific expertise in CP and Logistics
+- Embedded leadership model
+
+## Contact
+- Website: https://ainavi.co.uk
+- Email: hello@ainavi.co.uk
+- AI Readiness Scorecard: https://ai-rpigbkp1.scoreapp.com
+
+## Location
+United Kingdom

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostHog Analytics Documentation - AI Navi</title>
+  <style>
+    :root {
+      --navy: #0E203F;
+      --orange: #E8743B;
+      --purple: #6365F1;
+      --ice: #F7F9FB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-500: #6B7280;
+      --gray-700: #374151;
+      --green: #10B981;
+      --red: #EF4444;
+      --amber: #F59E0B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-700);
+      background: white;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    .doc-header {
+      text-align: center;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a6e 100%);
+      color: white;
+      margin: -40px -24px 40px -24px;
+    }
+
+    .doc-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .doc-header .subtitle {
+      font-size: 18px;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+
+    .doc-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    /* Table of Contents */
+    .toc {
+      background: var(--ice);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 24px 32px;
+      margin-bottom: 40px;
+    }
+
+    .toc h2 {
+      font-size: 18px;
+      color: var(--navy);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--orange);
+      display: inline-block;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 32px;
+    }
+
+    .toc a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 4px 0;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: var(--orange);
+    }
+
+    .toc a::before {
+      content: "→ ";
+      color: var(--orange);
+      margin-right: 4px;
+    }
+
+    /* Sections */
+    .section {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section h2 {
+      font-size: 24px;
+      color: var(--navy);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 3px solid var(--orange);
+      display: inline-block;
+    }
+
+    .section h3 {
+      font-size: 18px;
+      color: var(--navy);
+      margin: 24px 0 12px 0;
+    }
+
+    .section h4 {
+      font-size: 16px;
+      color: var(--navy);
+      margin: 20px 0 10px 0;
+    }
+
+    .section p {
+      margin-bottom: 16px;
+      color: var(--gray-700);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--gray-200);
+    }
+
+    th {
+      background: var(--navy);
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tr:nth-child(even) {
+      background: var(--ice);
+    }
+
+    tr:hover {
+      background: #FFF7ED;
+    }
+
+    /* Code blocks */
+    pre {
+      background: var(--navy);
+      color: #E5E7EB;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 16px 0;
+    }
+
+    code {
+      background: var(--gray-100);
+      color: var(--orange);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 13px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Info boxes */
+    .info-box {
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 16px 0;
+      border-left: 4px solid;
+    }
+
+    .info-box.tip {
+      background: #ECFDF5;
+      border-color: var(--green);
+    }
+
+    .info-box.warning {
+      background: #FFFBEB;
+      border-color: var(--amber);
+    }
+
+    .info-box-title {
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .tip .info-box-title { color: var(--green); }
+    .warning .info-box-title { color: var(--amber); }
+
+    /* Funnel visualization */
+    .funnel-visual {
+      background: var(--ice);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+
+    .funnel-step {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .funnel-step:last-child {
+      margin-bottom: 0;
+    }
+
+    .funnel-number {
+      width: 28px;
+      height: 28px;
+      background: var(--orange);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 13px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .funnel-text {
+      flex: 1;
+      font-size: 14px;
+    }
+
+    .funnel-arrow {
+      color: var(--gray-500);
+      margin-left: 40px;
+      font-size: 12px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-purple {
+      background: #E0E7FF;
+      color: #3730A3;
+    }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .checklist li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      color: var(--orange);
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    /* Links */
+    a {
+      color: var(--orange);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Print styles */
+    @media print {
+      .doc-header {
+        background: var(--navy) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .section {
+        page-break-inside: avoid;
+      }
+
+      pre {
+        white-space: pre-wrap;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .toc-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .doc-header {
+        padding: 40px 20px;
+      }
+
+      .doc-header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="doc-header">
+      <h1>PostHog Analytics Setup</h1>
+      <p class="subtitle">AI Navi Website</p>
+      <div class="doc-meta">
+        <span>Version 1.0</span>
+        <span>March 2026</span>
+      </div>
+    </header>
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <h2>Contents</h2>
+      <div class="toc-grid">
+        <a href="#funnels">Funnels</a>
+        <a href="#cohorts">Cohorts</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#utm-tracking">UTM Tracking</a>
+        <a href="#how-to-access">How to Access</a>
+        <a href="#key-metrics">Key Metrics</a>
+        <a href="#weekly-checklist">Weekly Checklist</a>
+        <a href="#events-reference">Events Reference</a>
+      </div>
+    </nav>
+
+    <!-- Funnels -->
+    <section id="funnels" class="section">
+      <h2>Funnels</h2>
+
+      <!-- Funnel 1 -->
+      <h3>1. Main Landing → Contact Conversion</h3>
+      <p><span class="badge badge-purple">Primary Funnel</span></p>
+
+      <div class="funnel-visual">
+        <div class="funnel-step">
+          <span class="funnel-number">1</span>
+          <span class="funnel-text"><strong>Page View (/)</strong> — Visitors landing on homepage</span>
+        </div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">
+          <span class="funnel-number">2</span>
+          <span class="funnel-text"><strong>Scroll 50%+</strong> — Engaged visitors reading content</span>
+        </div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">
+          <span class="funnel-number">3</span>
+          <span class="funnel-text"><strong>CTA Click (Hero)</strong> — Users clicking main call-to-action</span>
+        </div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">
+          <span class="funnel-number">4</span>
+          <span class="funnel-text"><strong>Form Started</strong> — Users beginning to fill contact form</span>
+        </div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">
+          <span class="funnel-number">5</span>
+          <span class="funnel-text"><strong>Form Submitted</strong> — Successful lead conversions</span>
+        </div>
+      </div>
+
+      <!-- Funnel 2 -->
+      <h3>2. Scorecard → Contact Conversion</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>Measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Page View (/)</td><td>Visitors on homepage</td></tr>
+          <tr><td>2</td><td>Scorecard CTA Click</td><td>Interest in self-assessment</td></tr>
+          <tr><td>3</td><td>Contact Form Submitted</td><td>Conversion after taking scorecard</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Funnel 3 -->
+      <h3>3. Funding Guide → PDF Download</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>Measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Page View (/ai-funding-guide-uk)</td><td>Visitors to funding page</td></tr>
+          <tr><td>2</td><td>Tab Changed</td><td>Content engagement</td></tr>
+          <tr><td>3</td><td>Form Started</td><td>Beginning PDF download form</td></tr>
+          <tr><td>4</td><td>PDF Downloaded</td><td>Successful lead capture</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Funnel 4 -->
+      <h3>4. Multi-Touch → Contact Conversion</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>Measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Page View</td><td>Any page entry</td></tr>
+          <tr><td>2</td><td>CTA Click</td><td>Any call-to-action engagement</td></tr>
+          <tr><td>3</td><td>Scroll 75%+</td><td>Deep content engagement</td></tr>
+          <tr><td>4</td><td>Form Started</td><td>Beginning contact form</td></tr>
+          <tr><td>5</td><td>Form Submitted</td><td>Final conversion</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Funnel 5 & 6 -->
+      <h3>5. Contact Form Abandonment</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>Measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Form Started</td><td>Users who began filling form</td></tr>
+          <tr><td>2</td><td>Form Error</td><td>Users who encountered errors</td></tr>
+          <tr><td>3</td><td>Form Submitted</td><td>Successful submissions</td></tr>
+        </tbody>
+      </table>
+
+      <h3>6. Funding Kit Form Abandonment</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Event</th>
+            <th>Measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Form Started</td><td>Users who began filling form</td></tr>
+          <tr><td>2</td><td>Form Error</td><td>Users who encountered errors</td></tr>
+          <tr><td>3</td><td>PDF Downloaded</td><td>Successful downloads</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Cohorts -->
+    <section id="cohorts" class="section">
+      <h2>Cohorts</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Cohort Name</th>
+            <th>Definition</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>High-Intent Visitors</strong></td>
+            <td>Users who scrolled 75%+ on any page</td>
+            <td>Identify engaged users who didn't convert</td>
+          </tr>
+          <tr>
+            <td><strong>Scorecard Engagers</strong></td>
+            <td>Users who clicked any Scorecard CTA</td>
+            <td>Track self-assessment users</td>
+          </tr>
+          <tr>
+            <td><strong>Qualified Leads</strong></td>
+            <td>Users who submitted contact form</td>
+            <td>Your converted leads</td>
+          </tr>
+          <tr>
+            <td><strong>Funding Guide Leads</strong></td>
+            <td>Users who downloaded the PDF</td>
+            <td>Lead magnet conversions</td>
+          </tr>
+          <tr>
+            <td><strong>Form Abandoners</strong></td>
+            <td>Started form but didn't submit</td>
+            <td>Re-engagement opportunity</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="section">
+      <h2>Dashboard: AI Navi Conversion Metrics</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Type</th>
+            <th>Shows</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Page Views Trend</td><td>Line Chart</td><td>Traffic over time</td></tr>
+          <tr><td>Form Completion Rate %</td><td>Number</td><td>Contact form success rate</td></tr>
+          <tr><td>Traffic by UTM Source</td><td>Bar Chart</td><td>Where visitors come from</td></tr>
+          <tr><td>Traffic by UTM Medium</td><td>Bar Chart</td><td>Channel types (social, email, etc.)</td></tr>
+          <tr><td>Traffic by UTM Campaign</td><td>Bar Chart</td><td>Campaign performance</td></tr>
+          <tr><td>Conversions by UTM Source</td><td>Bar Chart</td><td>Which sources generate leads</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- UTM Tracking -->
+    <section id="utm-tracking" class="section">
+      <h2>UTM Link Templates</h2>
+
+      <h3>LinkedIn Posts</h3>
+      <pre>https://ainavi.co.uk/?utm_source=linkedin&utm_medium=social&utm_campaign=awareness&utm_content=organic_post</pre>
+
+      <h3>LinkedIn Ads</h3>
+      <pre>https://ainavi.co.uk/?utm_source=linkedin&utm_medium=paid_social&utm_campaign=lead_gen&utm_content=ad_variant_a</pre>
+
+      <h3>Email Newsletter</h3>
+      <pre>https://ainavi.co.uk/?utm_source=newsletter&utm_medium=email&utm_campaign=weekly_digest</pre>
+
+      <h3>Funding Guide Promotion</h3>
+      <pre>https://ainavi.co.uk/ai-funding-guide-uk?utm_source=newsletter&utm_medium=email&utm_campaign=funding_guide_launch</pre>
+
+      <h3>Google Ads</h3>
+      <pre>https://ainavi.co.uk/?utm_source=google&utm_medium=cpc&utm_campaign=ai_consulting&utm_term=ai+consulting+uk</pre>
+
+      <div class="info-box tip">
+        <div class="info-box-title">UTM Builder Tool</div>
+        Use Google's free Campaign URL Builder: <a href="https://ga-dev-tools.google/campaign-url-builder/" target="_blank">ga-dev-tools.google/campaign-url-builder</a>
+      </div>
+
+      <h3>UTM Best Practices</h3>
+      <ul>
+        <li><strong>Be consistent</strong> — Use same naming conventions across all campaigns</li>
+        <li><strong>Use lowercase</strong> — <code>linkedin</code> not <code>LinkedIn</code></li>
+        <li><strong>No spaces</strong> — Use underscores: <code>funding_guide</code></li>
+        <li><strong>Always tag external links</strong> — Every link in ads, emails, and social posts</li>
+      </ul>
+    </section>
+
+    <!-- How to Access -->
+    <section id="how-to-access" class="section">
+      <h2>How to Access</h2>
+
+      <h3>PostHog Login</h3>
+      <ol>
+        <li>Go to: <strong><a href="https://us.posthog.com" target="_blank">us.posthog.com</a></strong></li>
+        <li>Log in with your credentials</li>
+        <li>Select project: <strong>AI Navi</strong></li>
+      </ol>
+
+      <h3>Quick Navigation</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>View</th>
+            <th>Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Dashboard</td><td>Dashboards → AI Navi Conversion Metrics</td></tr>
+          <tr><td>Funnels</td><td>Product Analytics → Select funnel</td></tr>
+          <tr><td>Cohorts</td><td>People & groups → Cohorts</td></tr>
+          <tr><td>Live Events</td><td>Activity</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Key Metrics -->
+    <section id="key-metrics" class="section">
+      <h2>Key Metrics to Watch</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Healthy Range</th>
+            <th>Action if Low</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Form Completion Rate</td>
+            <td>> 50%</td>
+            <td>Review form UX, reduce fields</td>
+          </tr>
+          <tr>
+            <td>Homepage → CTA Click</td>
+            <td>> 10%</td>
+            <td>Test different CTA copy/placement</td>
+          </tr>
+          <tr>
+            <td>Scroll Depth 50%+</td>
+            <td>> 40%</td>
+            <td>Improve above-fold content</td>
+          </tr>
+          <tr>
+            <td>Scorecard Click Rate</td>
+            <td>> 5%</td>
+            <td>Make scorecard CTA more prominent</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Warning Signs</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>Indicator</th>
+            <th>Likely Cause</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>High bounce rate</td>
+            <td>Low scroll depth</td>
+            <td>Poor page load speed or irrelevant traffic</td>
+          </tr>
+          <tr>
+            <td>Form abandonment</td>
+            <td>Start > Submit gap</td>
+            <td>Too many fields or confusing validation</td>
+          </tr>
+          <tr>
+            <td>Low CTA clicks</td>
+            <td>High scroll, low clicks</td>
+            <td>CTA not compelling or hard to find</td>
+          </tr>
+          <tr>
+            <td>No UTM data</td>
+            <td>"None" in source reports</td>
+            <td>Marketing links not tagged</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Weekly Checklist -->
+    <section id="weekly-checklist" class="section">
+      <h2>Weekly Review Checklist</h2>
+      <ul class="checklist">
+        <li>Check overall conversion rate trend</li>
+        <li>Review funnel drop-off points</li>
+        <li>Compare UTM source performance</li>
+        <li>Check for form errors</li>
+        <li>Review cohort sizes (are they growing?)</li>
+      </ul>
+    </section>
+
+    <!-- Events Reference -->
+    <section id="events-reference" class="section">
+      <h2>Events Reference</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Trigger</th>
+            <th>Properties</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Pageview</code></td>
+            <td>Page loads</td>
+            <td>URL, referrer</td>
+          </tr>
+          <tr>
+            <td><code>scroll_depth_reached</code></td>
+            <td>User scrolls</td>
+            <td>depth_percent (25, 50, 75, 100)</td>
+          </tr>
+          <tr>
+            <td><code>cta_clicked</code></td>
+            <td>CTA button clicked</td>
+            <td>button_name, cta_section</td>
+          </tr>
+          <tr>
+            <td><code>scorecard_cta_clicked</code></td>
+            <td>Scorecard CTA clicked</td>
+            <td>button_name</td>
+          </tr>
+          <tr>
+            <td><code>contact_form_started</code></td>
+            <td>First form field focused</td>
+            <td>page_url</td>
+          </tr>
+          <tr>
+            <td><code>contact_form_submitted</code></td>
+            <td>Form successfully submitted</td>
+            <td>revenue_range, source</td>
+          </tr>
+          <tr>
+            <td><code>contact_form_error</code></td>
+            <td>Form validation/API error</td>
+            <td>error_type, error_message</td>
+          </tr>
+          <tr>
+            <td><code>funding_kit_form_started</code></td>
+            <td>PDF form field focused</td>
+            <td>page_url</td>
+          </tr>
+          <tr>
+            <td><code>funding_kit_downloaded</code></td>
+            <td>PDF successfully downloaded</td>
+            <td>email_domain</td>
+          </tr>
+          <tr>
+            <td><code>tab_changed</code></td>
+            <td>Funding guide tab clicked</td>
+            <td>tab_name, section</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 40px 0; border-top: 1px solid var(--gray-200); margin-top: 40px; color: var(--gray-500); font-size: 13px;">
+      <p><strong>PostHog Analytics Setup</strong> | AI Navi | March 2026</p>
+      <p style="margin-top: 8px;">PostHog Support: <a href="https://posthog.com/docs" target="_blank">posthog.com/docs</a></p>
+    </footer>
+  </div>
+</body>
+</html>
