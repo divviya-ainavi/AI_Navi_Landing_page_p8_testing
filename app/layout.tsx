@@ -1,9 +1,13 @@
+"use client";
+
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import { PostHogProvider } from "@/components/providers/PostHogProvider";
+import { ThemeProvider } from "next-themes";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -81,22 +85,56 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function RootLayoutClient({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <html lang="en-GB" className="scroll-smooth">
+        <GoogleTagManager gtmId={GTM_ID} />
+        <body className={inter.className}>
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
+          <Script id="org-schema" type="application/ld+json">
+            {JSON.stringify(orgSchema)}
+          </Script>
+        </body>
+      </html>
+    );
+  }
+
   return (
-    <html lang="en-GB" className="scroll-smooth">
+    <html lang="en-GB" className="scroll-smooth" suppressHydrationWarning>
       <GoogleTagManager gtmId={GTM_ID} />
       <body className={inter.className}>
-        <PostHogProvider>
-          {children}
-        </PostHogProvider>
+        <ThemeProvider
+          themes={["light", "dark", "black-white"]}
+          defaultTheme="light"
+          attribute="class"
+          enableSystem={false}
+          disableTransitionOnChange={false}
+        >
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
+        </ThemeProvider>
         <Script id="org-schema" type="application/ld+json">
           {JSON.stringify(orgSchema)}
         </Script>
       </body>
     </html>
   );
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <RootLayoutClient>{children}</RootLayoutClient>;
 }
