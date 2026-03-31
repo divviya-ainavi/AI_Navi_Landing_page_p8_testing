@@ -48,13 +48,15 @@ export function Hero() {
 
             {/* CTA */}
             <div className="flex flex-row flex-wrap gap-3 mb-3">
-              <Button
-                variant="primary"
-                href={hero.primaryCTA.href}
-                onClick={() => trackCTAClick(hero.primaryCTA.label, 'hero', hero.primaryCTA.href)}
-              >
-                {hero.primaryCTA.label}
-              </Button>
+              <div className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:drop-shadow-lg">
+                <Button
+                  variant="primary"
+                  href={hero.primaryCTA.href}
+                  onClick={() => trackCTAClick(hero.primaryCTA.label, 'hero', hero.primaryCTA.href)}
+                >
+                  {hero.primaryCTA.label}
+                </Button>
+              </div>
             </div>
 
             <p className="text-[11px] text-lt-grey">
