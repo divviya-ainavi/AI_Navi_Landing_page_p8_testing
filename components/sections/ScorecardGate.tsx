@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Script from 'next/script';
+import { CaptchaError } from '@/components/ui/captcha-error';
 import { useAnalytics } from '@/hooks/use-analytics';
 
 const scaleDimensions = [
@@ -27,6 +28,7 @@ function ScoreBar({ letter, label, pct, color }: { letter: string; label: string
 
 export function ScorecardGate() {
   const { trackScorecardClick, trackCTAClick } = useAnalytics();
+  const [showEmbedHelp, setShowEmbedHelp] = useState(false);
 
   return (
     <section id="scorecard">
@@ -73,6 +75,23 @@ export function ScorecardGate() {
           src="https://static.scoreapp.com/js/integration/v1/embedding.js?v=jty3Tv"
           strategy="lazyOnload"
         />
+
+        {/* Captcha / submission help */}
+        <div className="max-w-2xl mx-auto px-6 pb-8">
+          <CaptchaError
+            show={showEmbedHelp}
+            message="If your scorecard submission isn't going through, try refreshing the page to reset the captcha verification — then complete it again before submitting."
+          />
+          <button
+            type="button"
+            aria-expanded={showEmbedHelp}
+            aria-controls="scorecard-embed-help"
+            onClick={() => setShowEmbedHelp((v) => !v)}
+            className="mt-3 text-[12px] text-mid-grey underline underline-offset-2 hover:text-orange transition-colors"
+          >
+            {showEmbedHelp ? 'Hide help' : 'Having trouble submitting?'}
+          </button>
+        </div>
       </div>
 
       {/* Bottom row: UK AI Funding Source Finder — centered single column */}
