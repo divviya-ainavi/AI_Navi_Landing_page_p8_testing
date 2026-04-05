@@ -37,6 +37,12 @@ export function ContactSection() {
   const [captchaToken, setCaptchaToken] = useState('');
   const captchaRef = useRef<ReCAPTCHA>(null);
   const [hasStartedForm, setHasStartedForm] = useState(false);
+  const [charCounts, setCharCounts] = useState({
+    fullName: 0,
+    companyName: 0,
+    jobTitle: 0,
+    workEmail: 0,
+  });
   const [form, setForm] = useState({
     fullName: '',
     companyName: '',
@@ -47,10 +53,21 @@ export function ContactSection() {
     hearAbout: '',
   });
 
+  const CHAR_LIMITS: Record<string, number> = {
+    fullName: 80,
+    companyName: 80,
+    jobTitle: 80,
+    workEmail: 254,
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    if (name in charCounts) {
+      setCharCounts((prev) => ({ ...prev, [name]: value.length }));
+    }
   };
 
   const handleFirstInteraction = () => {
@@ -147,12 +164,16 @@ export function ContactSection() {
                   type="text"
                   name="fullName"
                   required
+                  maxLength={80}
                   value={form.fullName}
                   onChange={handleChange}
                   onFocus={handleFirstInteraction}
                   placeholder="Jane Smith"
                   className={inputClass}
                 />
+                <p className={`mt-1 text-[11px] text-right ${charCounts.fullName >= 72 ? 'text-orange' : 'text-[#aaa]'}`}>
+                  {80 - charCounts.fullName} remaining
+                </p>
               </div>
               <div>
                 <label className="block text-[13px] font-semibold text-navy mb-1.5">
@@ -162,11 +183,15 @@ export function ContactSection() {
                   type="text"
                   name="companyName"
                   required
+                  maxLength={80}
                   value={form.companyName}
                   onChange={handleChange}
                   placeholder="Acme Corp"
                   className={inputClass}
                 />
+                <p className={`mt-1 text-[11px] text-right ${charCounts.companyName >= 72 ? 'text-orange' : 'text-[#aaa]'}`}>
+                  {80 - charCounts.companyName} remaining
+                </p>
               </div>
             </div>
 
@@ -179,11 +204,15 @@ export function ContactSection() {
                   type="text"
                   name="jobTitle"
                   required
+                  maxLength={80}
                   value={form.jobTitle}
                   onChange={handleChange}
                   placeholder="Chief Operating Officer"
                   className={inputClass}
                 />
+                <p className={`mt-1 text-[11px] text-right ${charCounts.jobTitle >= 72 ? 'text-orange' : 'text-[#aaa]'}`}>
+                  {80 - charCounts.jobTitle} remaining
+                </p>
               </div>
               <div>
                 <label className="block text-[13px] font-semibold text-navy mb-1.5">
@@ -193,11 +222,15 @@ export function ContactSection() {
                   type="email"
                   name="workEmail"
                   required
+                  maxLength={254}
                   value={form.workEmail}
                   onChange={handleChange}
                   placeholder="jane@company.com"
                   className={inputClass}
                 />
+                <p className={`mt-1 text-[11px] text-right ${charCounts.workEmail >= 244 ? 'text-orange' : 'text-[#aaa]'}`}>
+                  {254 - charCounts.workEmail} remaining
+                </p>
               </div>
             </div>
 
