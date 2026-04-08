@@ -111,7 +111,8 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
               <div className="absolute inset-0 bg-navy/40" />
               <button
                 onClick={() => setPlaying(true)}
-                className="absolute inset-0 flex items-center justify-center group"
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setPlaying(true); } }}
+                className="absolute inset-0 flex items-center justify-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange focus-visible:ring-offset-2"
                 aria-label={`Play ${study.name} demo`}
               >
                 <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg group-hover:bg-white group-hover:scale-110 transition-all duration-200">
